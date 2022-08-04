@@ -6,7 +6,9 @@ import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository;
@@ -24,5 +26,10 @@ public class OrderServiceImpl implements OrderService{
         int discount = discountPolicy.discount(member, itemPrice);
 
         return new Order(memberId,itemName,itemPrice,discount);
+    }
+
+    //테스트 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 }
