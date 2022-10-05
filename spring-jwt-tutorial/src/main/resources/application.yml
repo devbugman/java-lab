@@ -18,9 +18,6 @@ spring:
         show_sql: true
       defer-datasource-initialization: true
 
-logging:
-  level:
-    me.jwttutorial: DEBUG
 
 jwt:
   header: Authorization
