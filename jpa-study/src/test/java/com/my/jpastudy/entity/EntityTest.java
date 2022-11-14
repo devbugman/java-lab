@@ -38,7 +38,7 @@ public class EntityTest {
         Member member = new Member("hello", team);
         team.getMembers().add(member);
         em.persist(member);
-
+        em.flush();
         em.clear();
         Team findTeam = em.find(Team.class, team.getId());
         Member findMember = em.find(Member.class, member.getId());
@@ -58,7 +58,7 @@ public class EntityTest {
                 .build();
         member.changeTeam(team);
         em.persist(member);
-
+        em.flush();
         em.clear();
 
         Team findTeam = em.find(Team.class, team.getId());

@@ -25,6 +25,7 @@ public class ItemTest {
                 .price(43000)
                 .build();
         em.persist(book);
+        em.flush();
         em.clear();
         Book findBook = (Book) em.find(Item.class, book.getId()); // casting
 //        Book findBook = em.find(Book.class, book.getId());
@@ -43,6 +44,7 @@ public class ItemTest {
                 .price(50000)
                 .build();
         em.persist(album);
+        em.flush();
         em.clear();
 
         Album findAlbum = em.find(Album.class, album.getId());
@@ -60,6 +62,7 @@ public class ItemTest {
                 .build();
 
         em.persist(movie);
+        em.flush();
         em.clear();
 
         Movie findMovie = em.find(Movie.class, movie.getId());
