@@ -1,4 +1,4 @@
-package com.my.jpastudy.domain;
+package com.my.jpastudy.entity;
 
 import lombok.Builder;
 

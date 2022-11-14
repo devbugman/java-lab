@@ -1,6 +1,4 @@
-package com.my.jpastudy.domain;
-
-import lombok.Builder;
+package com.my.jpastudy.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
