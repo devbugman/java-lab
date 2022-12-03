@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+group 'com.cb'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = '0.8.8'
+    //  테스트결과 리포트를 저장할 경로 변경
+    //  default는 "$/jacoco"
+    //  reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    // 원하는 리포트를 켜고 끌 수 있습니다.
+    reports {
+        html.enabled true
+        xml.enabled false
+        csv.enabled false
+
+        //  각 리포트 타입 마다 리포트 저장 경로를 설정할 수 있습니다.
+        //html.destination file("$buildDir/jacocoHtml")
+        //  xml.destination file("$buildDir/jacoco.xml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.10
+            }
+            excludes = []
+        }
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.10
+            }
+
+            excludes = []
+        }
+    }
+}
