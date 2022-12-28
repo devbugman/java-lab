@@ -1,0 +1,3 @@
+rootProject.name = 'taco-cloud'
+include 'tacos-web'
+include 'tacos-data'
