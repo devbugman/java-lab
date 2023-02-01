@@ -60,7 +60,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 }
 ```
 
-## 동시성을 고려하지 안흘 때 문제점
+## 동시성을 고려하지 않을 때 문제점
 
 ```java
 
@@ -100,6 +100,7 @@ productId 1인 제품의 수량을 100개 세팅하고 ExecutorService를 통해
 생성하여 멀티스레드 테스트를 수행 하였습니다.
 
 하지만 위로직을 수행했을 때 전혀 다른 결과가 나옵니다.
+
 ![multiThreadFailTest](./images/동시성을고려x.png)
 
 수량 100개의 수량을 가진 제품을 감소하는 로직을 1개 씩 100번 수행 하도록한 테스트 
@@ -112,7 +113,7 @@ productId 1인 제품의 수량을 100개 세팅하고 ExecutorService를 통해
 
 ## 해결방법
 
-### `synchronized`키워드를 활용
+### 1. `synchronized`키워드를 활용
 ```java
 @Service
 public class StockService {
@@ -131,6 +132,7 @@ public class StockService {
 Java의 synchronized 키워드를 사용해서 하나의 쓰레드씩 해당 메소드를 호출하도록 수정하였습니다.
 
 하지만 정상적으로 동작하지 않았습니다.
+
 ![synchronizedFail](./images/synchronizeFail.png)
 
 이유는
@@ -145,4 +147,10 @@ Java의 synchronized 키워드를 사용해서 하나의 쓰레드씩 해당 메
 #### synchronized 키워드의 문제점
 - `Java`의 `Sychronized`는 하나의 프로세스 안에서만 보장이 됩니다.
 - 즉, 서버가 1대일 때는 문제가 없지만 서버가 여러 대 일경우 여러 개의 인스턴스가 존재하는 것과 동일하기 때문에 실질적인 운영 환경에서는 데이터의 정합성을 보장할 수 없습니다.
+
+
+### 2. Pessimistic Lock
+
+
+### 3. Optimistic Lock
  
