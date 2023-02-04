@@ -184,3 +184,28 @@ version을 이용하여 데이터 정합성을 맞춥니다.
 - 충돌이 빈번히 일어난다면 Pessimistic Lock을 이용하는 것을 추천
 
 ### 4. Named Lock
+예제에서는 편의성을 위해서 Stock 엔티티를 사용하지만, 실무에서는 별도의 JDBC 를 사용해야 한다고 합니다.
+```java
+public interface LockRepository extends JpaRepository<Stock, Long> {
+
+    @Query(value = "select get_lock(:key, 3000)", nativeQuery = true)
+    void getLock(String key);
+
+    @Query(value = "select release_lock(:key, key)", nativeQuery = true)
+    void releaseLock(String key);
+}
+```
+
+Named Lock 사용시 주의사항
+
+- 예제에서는 동일한 DataSource 를 사용하지만, 실제 서비스에서는 커넥션풀이 부족해질 수 있기에 DataSoruce 를 분리하는 걸 추천한다고 합니다.
+
+#### 장점
+
+- NamedLock 은 주로 분산락을 구현할 때 사용합니다.
+- Pessimistic 락은 time out을 구현하기 굉장히 힘들지만, Named Lock은 비교적 손쉽게 구현할 수 있다고 합니다.
+- 그 외에, 데이터 정합성을 맞춰야하는 경우에도 사용할 수 있다고 합니다.
+
+#### 단점
+- Naemd Lock 은 트랜잭션 종료 시에, 락 해제와 세션관리를 잘 해주어야하므로 주의해서 사용주어야 합니다.
+- 실제 사용할 때는 구현방법이, 복잡할 수 있습니다.
