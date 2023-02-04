@@ -4,10 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -20,6 +17,9 @@ public class Stock {
 
     private Long productId;
     private Long quantity;
+
+    @Version // Optimistic Lock
+    private Long version;
 
     public Stock(final Long productId, final Long quantity) {
         this.productId = productId;

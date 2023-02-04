@@ -141,6 +141,7 @@ Java의 synchronized 키워드를 사용해서 하나의 쓰레드씩 해당 메
 
 #### 해결 방법
 - `@Transactional` 어노테이션을 제거하면 된다.
+
 ![synchronizedO](./images/synchronizedO.png)
 
 
@@ -150,7 +151,36 @@ Java의 synchronized 키워드를 사용해서 하나의 쓰레드씩 해당 메
 
 
 ### 2. Pessimistic Lock
+![pessimistic_lock](./images/pessimisticlockimage.png)
+
+![pessimisticLock](./images/pessimisticLock.png)
+
+#### 장점
+- 충돌이 빈번하게 일어난다면 롤백의 횟수를 줄일 수 있기 때문에, Optimistic Lock 보다는 성능이 좋을 수 있습니다.
+- 비관적 락을 통해 데이터를 제어하기 때문에 데이터 정합성을 어느정도 보장할 수 있습니다.
+
+#### 단점
+- 데이터 자체에 별도의 락을 잡기때문에 동시성이 떨어져 성능저하가 발생할 수 있습니다.
+- 특히 읽기가 많이 이루어지는 데이터베이스의 경우에는 손해가 더 크다고 합니다.
+- 서로 자원이 필요한 경우, 락이 걸려있으므로 데드락이 일어날 가능성이 있습니다.
 
 
 ### 3. Optimistic Lock
- 
+version을 이용하여 데이터 정합성을 맞춥니다.
+
+![optimisticlockimage](./images/optimisticlockimage.png)
+
+- 서버1과 서버2가 버전1인 데이터를 가져갑니다.
+- 서버1이 버전1을 업데이트할 때 버전2로 업데이트합니다.
+- 서버2가 버전 1인 조건으로 업데이트를 실행할 때 실패하게 됩니다.
+- 내가 읽은 버전이 수정 되었을 때 어플리케이션에서 다시 읽은 후에 작업을 수행합니다.
+
+![optimisticLock](./images/optimisticLock.png)
+#### 장점
+- 별도의 락을 잡지 않아서 Pessimistic Lock보다 성능상이점이 있다.
+
+#### 단점
+- update에 실패했을 때 개발자가 직접 실패로직을 짜야한다.
+- 충돌이 빈번히 일어난다면 Pessimistic Lock을 이용하는 것을 추천
+
+### 4. Named Lock
