@@ -1,9 +1,0 @@
-
-dependencies {
-	implementation project(':tacos-data')
-	// thymeleaf dependency
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-}
-
