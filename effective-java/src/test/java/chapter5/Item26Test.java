@@ -9,7 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("로 타입은 사용하지말자")
-public class Item5 {
+public class Item26Test {
 
     @Test
     @DisplayName("로 타입으로 원소를 TypeCasting 할 때 [ClassCastException] 예외가 발생한다.")
