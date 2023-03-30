@@ -1,5 +1,7 @@
 package chapter5;
 
+import chapter5.item28.ArrayChooser;
+import chapter5.item28.GenericChooser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
