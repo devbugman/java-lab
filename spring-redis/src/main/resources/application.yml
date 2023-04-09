@@ -1,5 +1,5 @@
 spring:
   data:
     redis:
-      port: 6973
+      port: 6379
       host: localhost
