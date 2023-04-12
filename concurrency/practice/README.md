@@ -237,5 +237,47 @@ public class RedisRepository {
 
 ### Redisson
 - pub-sub 기반으로 Lock 구현 제공합니다.
-- 실패에 따른 처리 로직을 구현할 필요가 없다.
+- 별도의 retry 로직이 필요없다.
+- 채널을 하나 만들고 락을 점유하고 있는 쓰레드가 락을 받으려는 쓰레드에게 점유 해제를 알린다. 
+```java
+@Component
+public class RedissonLockStockFacade {
 
+    // 구현이 복잡하고, 별도의 라이브러리를 사용해야 함
+    private final RedissonClient redissonClient;
+    private final StockService stockService;
+
+    public RedissonLockStockFacade(final RedissonClient redissonClient,
+        final StockService stockService) {
+        this.redissonClient = redissonClient;
+        this.stockService = stockService;
+    }
+
+    public void decrease(Long key, Long quantity) {
+        final RLock lock = redissonClient.getLock(key.toString());
+
+        try {
+            final boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
+
+            if (!available) {
+                System.out.println("lock 획득 실패 @!");
+                return;
+            }
+            stockService.decrease(key, quantity);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+## MySQL과 Redis 간단 비교
+### MySQL
+- 이미 데이터베이스로 MySQL를 사용하고 있다면 별도의 비용없이 사용이 가능
+- 어느정도의 트래픽까지는 문제없이 활용 가능
+- Redis보다는 성능이 좋지 않다.
+### Redis
+- 활용중인 Redis가 없다면 별도로 구축해야하기 때문에 인프라 관리비용이 발생
+- MySQL보다 성능이 좋음
+- 
