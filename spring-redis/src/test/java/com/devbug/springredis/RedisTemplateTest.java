@@ -24,7 +24,6 @@ public class RedisTemplateTest {
     @Test
     void getRedisValue() {
         final Object o = redisTemplate.opsForValue().get(REDIS_KEY);
-
         assertThat(o.toString()).isEqualTo("object");
     }
 

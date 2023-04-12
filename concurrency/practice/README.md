@@ -209,3 +209,33 @@ Named Lock 사용시 주의사항
 #### 단점
 - Naemd Lock 은 트랜잭션 종료 시에, 락 해제와 세션관리를 잘 해주어야하므로 주의해서 사용주어야 합니다.
 - 실제 사용할 때는 구현방법이, 복잡할 수 있습니다.
+
+
+## Redis
+
+### Lettuce 
+```java
+@Component
+public class RedisRepository {
+    public Boolean lock(Long key) {
+        return redisTemplate.opsForValue()
+            .setIfAbsent(generateKey(key), "lock", Duration.ofMillis(3_000));
+    }
+
+    public Boolean unLock(Long key) {
+        return redisTemplate.delete(generateKey(key));
+    }
+}
+```
+- Lettuce은 MySQL과 비슷한 락 방식입니다.
+- key를 활용하여 락을 획득하고 로직이 끝나면 unlock메서드를 활용하여 락을 해제합니다.
+- lettuce lock같은 경우 개발자가 락획득에 대한 로직을 구현해야 됩니다.
+
+#### 주의 사항
+- 스핀락 방식임으로 레디스의 부하를 줄수 있습니다.
+- 레디스 락을 획득 시 Thread.sleep으로 텀을 두고 사용해야 합니다.
+
+### Redisson
+- pub-sub 기반으로 Lock 구현 제공합니다.
+- 실패에 따른 처리 로직을 구현할 필요가 없다.
+
